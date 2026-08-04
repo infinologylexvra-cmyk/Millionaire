@@ -31,6 +31,19 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Close mobile menu on route change / resize
+  useEffect(() => {
+    const onResize = () => { if (window.innerWidth >= 1024) setMobileOpen(false); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
   useEffect(() => {
     const onClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false);
@@ -42,6 +55,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     await logout();
     setMenuOpen(false);
+    setMobileOpen(false);
     navigate(ROUTES.HOME);
   };
 
@@ -49,12 +63,14 @@ const Navbar = () => {
     <header
       className={classNames(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        scrolled || mobileOpen ? 'bg-charcoal/90 backdrop-blur-lg border-b border-white/5' : 'bg-gradient-to-b from-black/70 to-transparent'
+        scrolled || mobileOpen ? 'bg-charcoal/95 backdrop-blur-xl border-b border-white/5' : 'bg-gradient-to-b from-black/80 to-transparent'
       )}
     >
-      <nav className="max-w-7xl mx-auto flex items-center justify-between px-5 lg:px-8 h-[72px]">
-        <Logo />
+      <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-5 lg:px-8 h-[60px] sm:h-[68px] lg:h-[72px]">
+        {/* Logo – smaller on mobile */}
+        <Logo size="sm" className="shrink-0" />
 
+        {/* Desktop nav links */}
         <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <NavLink
@@ -72,33 +88,34 @@ const Navbar = () => {
           ))}
         </div>
 
-        <div className="flex items-center gap-2 lg:gap-3">
+        {/* Right side icons */}
+        <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3">
           <Link
             to={ROUTES.SEARCH}
-            className="hidden sm:flex w-10 h-10 items-center justify-center rounded-full text-cream/70 hover:text-gold-400 hover:bg-white/5 transition-colors"
+            className="hidden sm:flex w-9 h-9 lg:w-10 lg:h-10 items-center justify-center rounded-full text-cream/70 hover:text-gold-400 hover:bg-white/5 transition-colors"
             aria-label="Search numbers"
           >
-            <FiSearch size={18} />
+            <FiSearch size={17} />
           </Link>
 
           {isAuthenticated && (
             <Link
               to={ROUTES.ACCOUNT_WISHLIST}
-              className="hidden sm:flex w-10 h-10 items-center justify-center rounded-full text-cream/70 hover:text-gold-400 hover:bg-white/5 transition-colors"
+              className="hidden sm:flex w-9 h-9 lg:w-10 lg:h-10 items-center justify-center rounded-full text-cream/70 hover:text-gold-400 hover:bg-white/5 transition-colors"
               aria-label="Wishlist"
             >
-              <FiHeart size={18} />
+              <FiHeart size={17} />
             </Link>
           )}
 
           <Link
             to={ROUTES.CART}
-            className="relative flex w-10 h-10 items-center justify-center rounded-full text-cream/70 hover:text-gold-400 hover:bg-white/5 transition-colors"
+            className="relative flex w-9 h-9 lg:w-10 lg:h-10 items-center justify-center rounded-full text-cream/70 hover:text-gold-400 hover:bg-white/5 transition-colors"
             aria-label="Cart"
           >
-            <FiShoppingBag size={18} />
+            <FiShoppingBag size={17} />
             {count > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 min-w-[18px] px-1 rounded-full bg-gold-500 text-charcoal text-[10px] font-bold flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 min-w-[16px] px-0.5 rounded-full bg-gold-500 text-charcoal text-[9px] font-bold flex items-center justify-center">
                 {count}
               </span>
             )}
@@ -108,7 +125,7 @@ const Navbar = () => {
             <div className="relative hidden sm:block" ref={menuRef}>
               <button
                 onClick={() => setMenuOpen((s) => !s)}
-                className="w-10 h-10 rounded-full gold-gradient-bg text-charcoal font-bold text-sm flex items-center justify-center"
+                className="w-9 h-9 lg:w-10 lg:h-10 rounded-full gold-gradient-bg text-charcoal font-bold text-xs lg:text-sm flex items-center justify-center"
               >
                 {initials(user?.name) || <FiUser />}
               </button>
@@ -139,53 +156,94 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <Link to={ROUTES.LOGIN} className="hidden sm:block text-sm text-cream/80 hover:text-gold-400 px-2">
-              Log in
-            </Link>
+            <Button to={ROUTES.LOGIN} size="sm" className="hidden sm:inline-flex text-xs px-3 py-1.5">
+              Login / Signup
+            </Button>
           )}
 
-          <Button to={isAuthenticated ? ROUTES.ACCOUNT_PROFILE : ROUTES.LOGIN} size="sm" className="hidden sm:inline-flex">
-            {isAuthenticated ? 'My Account' : 'Login / Signup'}
-          </Button>
-
+          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((s) => !s)}
-            className="lg:hidden w-10 h-10 flex items-center justify-center text-cream"
+            className="lg:hidden w-9 h-9 flex items-center justify-center text-cream rounded-lg hover:bg-white/5 transition-colors"
+            aria-label="Toggle menu"
           >
-            {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+            {mobileOpen ? <FiX size={20} /> : <FiMenu size={20} />}
           </button>
         </div>
       </nav>
 
-      {mobileOpen && (
-        <div className="lg:hidden bg-charcoal border-t border-white/5 px-5 py-6 space-y-5">
+      {/* Mobile slide-down menu */}
+      <div
+        className={classNames(
+          'lg:hidden overflow-hidden transition-all duration-300 ease-in-out',
+          mobileOpen ? 'max-h-[calc(100vh-60px)] opacity-100' : 'max-h-0 opacity-0'
+        )}
+      >
+        <div className="bg-charcoal/98 backdrop-blur-xl border-t border-white/5 px-5 py-5 space-y-1">
+          {/* Nav links */}
           {navLinks.map((link) => (
-            <Link
+            <NavLink
               key={link.label}
               to={link.to}
               onClick={() => setMobileOpen(false)}
-              className="block text-cream/80 text-base"
+              className={({ isActive }) =>
+                classNames(
+                  'flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium transition-colors',
+                  isActive
+                    ? 'text-gold-400 bg-gold-500/10'
+                    : 'text-cream/80 hover:text-gold-400 hover:bg-white/5'
+                )
+              }
             >
               {link.label}
-            </Link>
+            </NavLink>
           ))}
-          <div className="h-px bg-white/10" />
+
+          {/* Search on mobile */}
+          <Link
+            to={ROUTES.SEARCH}
+            onClick={() => setMobileOpen(false)}
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-cream/80 hover:text-gold-400 hover:bg-white/5 transition-colors"
+          >
+            <FiSearch size={16} /> Search Numbers
+          </Link>
+
+          <div className="h-px bg-white/8 my-2" />
+
+          {/* Auth section */}
           {isAuthenticated ? (
             <>
-              <Link to={ROUTES.ACCOUNT_PROFILE} onClick={() => setMobileOpen(false)} className="block text-cream/80">My Profile</Link>
-              <Link to={ROUTES.ACCOUNT_ORDERS} onClick={() => setMobileOpen(false)} className="block text-cream/80">My Orders</Link>
-              <Link to={ROUTES.ACCOUNT_WISHLIST} onClick={() => setMobileOpen(false)} className="block text-cream/80">Wishlist</Link>
-              {isAdmin && <Link to={ROUTES.ADMIN} onClick={() => setMobileOpen(false)} className="block text-cream/80">Admin Dashboard</Link>}
-              <button onClick={handleLogout} className="text-red-400">Logout</button>
+              <div className="px-4 py-2">
+                <p className="text-sm text-cream font-medium truncate">{user?.name}</p>
+                <p className="text-xs text-cream/40 truncate">{user?.email}</p>
+              </div>
+              <Link to={ROUTES.ACCOUNT_PROFILE} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] text-cream/80 hover:bg-white/5">
+                <FiUser size={16} /> My Profile
+              </Link>
+              <Link to={ROUTES.ACCOUNT_ORDERS} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] text-cream/80 hover:bg-white/5">
+                <FiPackage size={16} /> My Orders
+              </Link>
+              <Link to={ROUTES.ACCOUNT_WISHLIST} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] text-cream/80 hover:bg-white/5">
+                <FiHeart size={16} /> Wishlist
+              </Link>
+              {isAdmin && (
+                <Link to={ROUTES.ADMIN} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] text-cream/80 hover:bg-white/5">
+                  <FiGrid size={16} /> Admin Dashboard
+                </Link>
+              )}
+              <div className="h-px bg-white/8 my-2" />
+              <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] text-red-400 hover:bg-red-500/10 w-full">
+                <FiLogOut size={16} /> Logout
+              </button>
             </>
           ) : (
-            <div className="flex gap-3">
-              <Button to={ROUTES.LOGIN} variant="outline" className="flex-1" onClick={() => setMobileOpen(false)}>Log in</Button>
-              <Button to={ROUTES.REGISTER} className="flex-1" onClick={() => setMobileOpen(false)}>Sign up</Button>
+            <div className="flex gap-3 px-4 pt-2 pb-1">
+              <Button to={ROUTES.LOGIN} variant="outline" className="flex-1 text-sm" onClick={() => setMobileOpen(false)}>Log in</Button>
+              <Button to={ROUTES.REGISTER} className="flex-1 text-sm" onClick={() => setMobileOpen(false)}>Sign up</Button>
             </div>
           )}
         </div>
-      )}
+      </div>
     </header>
   );
 };

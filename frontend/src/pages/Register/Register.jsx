@@ -57,11 +57,7 @@ const Register = () => {
         <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-gold-500/10 blur-3xl" />
         <div className="absolute inset-0 dotted-bg opacity-10" />
 
-        <div className="relative z-10">
-          <Logo size="md" to={ROUTES.HOME} />
-        </div>
-
-        <div className="relative z-10 max-w-md">
+        <div className="relative z-10 max-w-md mt-16">
           <p className="font-display text-5xl leading-tight text-cream mb-6">
             Join India&apos;s most
             <br />
@@ -83,7 +79,6 @@ const Register = () => {
       <div className="flex items-center justify-center p-6 sm:p-10">
         <div className="pt-24 lg:pt-0 max-w-md w-full">
           <div className="lg:hidden mb-8 flex justify-center">
-            <Logo size="md" to={ROUTES.HOME} />
           </div>
 
           <h1 className="font-display text-3xl text-cream mb-2">Create your account</h1>

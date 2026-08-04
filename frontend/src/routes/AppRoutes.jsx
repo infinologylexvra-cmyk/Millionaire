@@ -25,6 +25,7 @@ import QRPayment from '../pages/Checkout/QRPayment';
 import Contact from '../pages/Contact/Contact';
 import About from '../pages/About/About';
 import Plans from '../pages/Plans/Plans';
+import Numerology from '../pages/Numerology';
 import FAQ from '../pages/FAQ/FAQPage';
 import Terms from '../pages/Terms/Terms';
 import PrivacyPolicy from '../pages/PrivacyPolicy/PrivacyPolicy';
@@ -58,6 +59,7 @@ const AppRoutes = () => (
       <Route path={ROUTES.CONTACT} element={<Contact />} />
       <Route path={ROUTES.ABOUT} element={<About />} />
       <Route path={ROUTES.PLANS} element={<Plans />} />
+      <Route path={ROUTES.NUMEROLOGY} element={<Numerology />} />
       <Route path={ROUTES.FAQ} element={<FAQ />} />
       <Route path={ROUTES.TERMS} element={<Terms />} />
       <Route path={ROUTES.PRIVACY} element={<PrivacyPolicy />} />

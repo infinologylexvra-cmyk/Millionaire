@@ -131,12 +131,7 @@ const Home = () => {
             >
               Explore Numbers <FiChevronRight />
             </Link>
-            <Link
-              to={ROUTES.PLANS}
-              className="flex items-center justify-center gap-2 px-8 py-3.5 rounded text-sm font-bold uppercase tracking-wider border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37]/10 transition"
-            >
-              View Plans <FiChevronRight />
-            </Link>
+
           </div>
         </div>
 

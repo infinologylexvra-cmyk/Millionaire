@@ -15,15 +15,12 @@ const Logo = ({ to = '/', size = 'md', showTagline = false, className = '' }) =>
 
   const content = (
     <div className={classNames('flex items-center gap-2.5', className)}>
-      {/* Logo image */}
+      {/* Logo image – uses the actual brand logo */}
       <img
         src="/logo.jpg"
-        alt="Millionaire Numbers"
-        width={imgSize}
-        height={imgSize}
-        className="rounded-md object-contain"
+        alt="Millionaire Numbers Logo"
         style={{ width: imgSize, height: imgSize }}
-        onError={(e) => { e.target.style.display = 'none'; }}
+        className="rounded-full object-cover border border-[#d4af37]/50 shadow-[0_0_12px_rgba(212,175,55,0.3)]"
       />
 
       {/* Brand text */}

@@ -1,0 +1,6 @@
+- [x] Fix CORS in backend `app.js`
+- [x] Fix Logo in `Header.jsx`
+- [x] Fix UI glitch in `QRPayment.jsx` (Total Amount overlapping line)
+- [x] Write and run `updateData.js` migration script for new numbers and settings
+- [x] Implement "Search by Name" (T9 numerology)
+- [x] Implement "Request Custom Number" form

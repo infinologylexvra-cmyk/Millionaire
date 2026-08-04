@@ -1,6 +1,7 @@
 export const ROUTES = {
   HOME: '/',
   NUMBERS: '/numbers',
+  NUMEROLOGY: '/numerology',
   NUMBER_DETAILS: (id) => `/numbers/${id}`,
   SEARCH: '/search',
   CART: '/cart',

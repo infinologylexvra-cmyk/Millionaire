@@ -8,9 +8,9 @@ export const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 export const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || '';
 
 export const CONTACT_EMAIL = 'hello@millionairenumbers.in';
-export const CONTACT_PHONE = '+91 98765 43210';
-export const WHATSAPP_NUMBER = '919876543210';
-export const COMPANY_ADDRESS = 'Bandra Kurla Complex, Mumbai, Maharashtra 400051, India';
+export const CONTACT_PHONE = '+91 98886 95199';
+export const WHATSAPP_NUMBER = '919888695199';
+export const COMPANY_ADDRESS = 'SBP City Center Sector 115 Mohali Kharar Landran Road';
 
 export const SOCIAL_LINKS = {
   instagram: 'https://instagram.com',

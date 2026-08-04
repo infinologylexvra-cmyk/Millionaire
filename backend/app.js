@@ -32,9 +32,11 @@ app.use(
   })
 );
 
-const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
-  .split(',')
-  .map((o) => o.trim());
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://millionaire-d2gp.onrender.com',
+  ...(process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',').map((o) => o.trim()) : [])
+];
 
 app.use(
   cors({

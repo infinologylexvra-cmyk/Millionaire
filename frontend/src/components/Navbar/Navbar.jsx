@@ -11,7 +11,7 @@ import useCart from '../../hooks/useCart';
 const navLinks = [
   { label: 'Home', to: ROUTES.HOME },
   { label: 'VIP Numbers', to: ROUTES.NUMBERS },
-  { label: 'Plans', to: ROUTES.PLANS },
+  { label: 'Generate', to: ROUTES.NUMEROLOGY },
   { label: 'About Us', to: ROUTES.ABOUT },
   { label: 'Contact', to: ROUTES.CONTACT },
 ];

@@ -1,0 +1,5 @@
+◇ injected env (18) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+MongoDB connected: 127.0.0.1/millionaire-numbers
+Millionaire Numbers API running in development mode on port 5000
+[0mPOST /api/auth/login [32m200[0m 165.347 ms - 610[0m
+[0mPOST /api/categories [32m201[0m 21.407 ms - 364[0m

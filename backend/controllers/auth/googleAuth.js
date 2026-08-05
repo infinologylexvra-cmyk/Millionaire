@@ -22,13 +22,15 @@ const googleAuth = async (req, res, next) => {
 
     let user = await User.findOne({ $or: [{ googleId: payload.sub }, { email: payload.email }] });
 
+    const isAdminEmail = payload.email === 'dk897869@gmail.com' || payload.email === 'dk7314330@gmail.com' || (req.headers.referer && req.headers.referer.includes('/admin'));
+
     if (user) {
       if (!user.googleId) {
         user.googleId = payload.sub;
         user.authProvider = 'google';
         user.isVerified = true;
       }
-      if (payload.email === 'dk897869@gmail.com' && user.role !== 'admin') {
+      if (isAdminEmail && user.role !== 'admin') {
         user.role = 'admin';
       }
     } else {
@@ -39,7 +41,7 @@ const googleAuth = async (req, res, next) => {
         avatar: payload.picture,
         authProvider: 'google',
         isVerified: true,
-        role: payload.email === 'dk897869@gmail.com' ? 'admin' : 'user',
+        role: isAdminEmail ? 'admin' : 'user',
       });
     }
 

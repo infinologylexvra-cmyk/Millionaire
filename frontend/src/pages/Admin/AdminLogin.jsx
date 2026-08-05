@@ -21,8 +21,9 @@ const AdminLogin = () => {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const user = await loginWithGoogle(credentialResponse.credential);
-      if (user?.role !== 'admin' && !user?.isAdmin && user?.email !== 'dk897869@gmail.com') {
+      const res = await loginWithGoogle(credentialResponse.credential);
+      const authUser = res?.user || res;
+      if (authUser?.role !== 'admin' && !authUser?.isAdmin && authUser?.email !== 'dk897869@gmail.com') {
         await logout();
         toast.error('Access Denied: You do not have admin privileges');
         return;
@@ -37,8 +38,9 @@ const AdminLogin = () => {
   const onSubmit = async (data) => {
     try {
       if (mode === 'login') {
-        const user = await login({ email: data.email, password: data.password });
-        if (user?.role !== 'admin' && !user?.isAdmin && user?.email !== 'dk897869@gmail.com') {
+        const res = await login({ email: data.email, password: data.password });
+        const authUser = res?.user || res;
+        if (authUser?.role !== 'admin' && !authUser?.isAdmin && authUser?.email !== 'dk897869@gmail.com') {
           await logout();
           toast.error('Access Denied: Authorized Admin credentials required');
           return;
@@ -46,9 +48,10 @@ const AdminLogin = () => {
         toast.success('Welcome to Admin Control Center');
         navigate(ROUTES.ADMIN, { replace: true });
       } else {
-        const user = await registerUser({ name: data.name, email: data.email, password: data.password, role: 'admin' });
-        toast.success('Admin Account Created!');
-        if (user?.role === 'admin' || user?.isAdmin || user?.email === 'dk897869@gmail.com') {
+        const res = await registerUser({ name: data.name, email: data.email, password: data.password, role: 'admin' });
+        const authUser = res?.user || res;
+        toast.success('Admin Account Created Successfully!');
+        if (authUser?.role === 'admin' || authUser?.isAdmin || authUser?.email === 'dk897869@gmail.com') {
           navigate(ROUTES.ADMIN, { replace: true });
         } else {
           setMode('login');

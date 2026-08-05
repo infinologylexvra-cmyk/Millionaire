@@ -28,13 +28,34 @@ const NumberCard = ({ number, index = 0 }) => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const inCart = isInCart(number._id);
-  const isLocked = number.isSold || (number.isReserved && number.reservedBy && number.reservedBy !== user?._id);
+  const userIdStr = user?._id || user?.id || '';
+  const reservedByStr = typeof number.reservedBy === 'object' ? (number.reservedBy?._id || number.reservedBy?.id || '') : (number.reservedBy || '');
+
+  const isSold = number.isSold;
+  const isReserved = number.isReserved && reservedByStr && reservedByStr !== userIdStr;
+  const isLocked = isSold || isReserved;
+
+  const handleCardClick = (e) => {
+    if (isSold) {
+      e.preventDefault();
+      toast.error('This VIP number is sold out');
+      return;
+    }
+    if (isReserved) {
+      e.preventDefault();
+      toast.error('This VIP number is currently locked/reserved by another customer');
+      return;
+    }
+  };
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    if (isLocked) {
-      toast.error('This number is locked/reserved by another customer');
+    if (isSold) {
+      toast.error('This VIP number is sold out');
+      return;
+    }
+    if (isReserved) {
+      toast.error('This VIP number is locked/reserved by another customer');
       return;
     }
     if (inCart) {
@@ -68,9 +89,10 @@ const NumberCard = ({ number, index = 0 }) => {
     >
       <Link
         to={ROUTES.NUMBER_DETAILS(number._id)}
+        onClick={handleCardClick}
         className={classNames(
           'group block card-surface rounded-2xl p-5 transition-all duration-300 relative overflow-hidden',
-          isLocked ? 'opacity-75 border-amber-500/30' : 'hover:border-gold-500/40 hover:-translate-y-1'
+          isSold ? 'opacity-60 border-red-500/30' : isReserved ? 'opacity-75 border-amber-500/30' : 'hover:border-gold-500/40 hover:-translate-y-1'
         )}
       >
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-gold-500/5 rounded-full blur-2xl group-hover:bg-gold-500/10 transition-colors" />
@@ -80,11 +102,15 @@ const NumberCard = ({ number, index = 0 }) => {
             <span className={classNames('text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-full border', patternColors[number.pattern] || 'text-cream/60 border-white/15')}>
               {number.pattern}
             </span>
-            {isLocked && (
-              <span className="text-[10px] tracking-widest uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">
-                Locked 🔒
+            {isSold ? (
+              <span className="text-[10px] tracking-widest uppercase px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/40 font-bold">
+                SOLD OUT 🚫
               </span>
-            )}
+            ) : isReserved ? (
+              <span className="text-[10px] tracking-widest uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">
+                LOCKED 🔒
+              </span>
+            ) : null}
           </div>
           <button onClick={handleWishlist} className="text-cream/40 hover:text-gold-400 transition-colors" aria-label="Wishlist">
             <FiHeart size={17} className={isWishlisted(number._id) ? 'fill-gold-500 text-gold-500' : ''} />
@@ -105,11 +131,17 @@ const NumberCard = ({ number, index = 0 }) => {
             )}
             <p className="text-lg font-semibold text-gold-400">{formatINR(number.price)}</p>
           </div>
-          {isLocked ? (
+          {isSold ? (
+            <button
+              onClick={handleAddToCart}
+              className="px-3 py-1.5 rounded-full bg-red-500/15 text-red-400 text-xs font-bold border border-red-500/30 flex items-center gap-1 cursor-not-allowed"
+            >
+              Sold Out 🚫
+            </button>
+          ) : isReserved ? (
             <button
               onClick={handleAddToCart}
               className="px-3 py-1.5 rounded-full bg-amber-500/15 text-amber-300 text-xs font-bold border border-amber-500/30 flex items-center gap-1 cursor-not-allowed"
-              title="Locked by another user"
             >
               Locked 🔒
             </button>

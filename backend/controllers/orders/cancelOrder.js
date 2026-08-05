@@ -22,6 +22,19 @@ const cancelOrder = async (req, res, next) => {
     order.statusHistory.push({ status: 'cancelled', note: order.cancelReason });
     await order.save();
 
+    // Release reserved numbers immediately so they restore for other users
+    const NumberModel = require('../../models/Number');
+    for (const item of order.items) {
+      const numId = item.number || item._id;
+      if (numId) {
+        await NumberModel.findByIdAndUpdate(numId, {
+          isReserved: false,
+          reservedBy: null,
+          reservedAt: null,
+        });
+      }
+    }
+
     return success(res, 200, 'Order cancelled successfully', order);
   } catch (err) {
     next(err);

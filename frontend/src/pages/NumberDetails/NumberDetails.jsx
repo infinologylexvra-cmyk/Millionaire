@@ -144,10 +144,19 @@ const NumberDetails = () => {
     ? Math.round(((number.originalPrice - number.price) / number.originalPrice) * 100)
     : 0;
   const categoryName = typeof number.category === 'object' ? number.category?.name : number.category;
-  const isLocked = number.isSold || (number.isReserved && number.reservedBy && number.reservedBy !== user?._id);
+
+  const userIdStr = user?._id || user?.id || '';
+  const reservedByStr = typeof number.reservedBy === 'object' ? (number.reservedBy?._id || number.reservedBy?.id || '') : (number.reservedBy || '');
+  const isSold = Boolean(number.isSold);
+  const isReserved = Boolean(number.isReserved && reservedByStr && reservedByStr !== userIdStr);
+  const isLocked = isSold || isReserved;
 
   const handleCartAction = () => {
-    if (isLocked) {
+    if (isSold) {
+      toast.error('This VIP number is sold out');
+      return;
+    }
+    if (isReserved) {
       toast.error('This number is currently locked/reserved by another customer');
       return;
     }
@@ -160,7 +169,11 @@ const NumberDetails = () => {
   };
 
   const handleBuyNow = () => {
-    if (isLocked) {
+    if (isSold) {
+      toast.error('This VIP number is sold out');
+      return;
+    }
+    if (isReserved) {
       toast.error('This number is currently locked/reserved by another customer');
       return;
     }
@@ -185,10 +198,16 @@ const NumberDetails = () => {
     <>
       <SEO title={`${formatPhone(number.phoneNumber)} - Premium ${number.pattern} Number`} />
       <div className="max-w-7xl mx-auto px-5 lg:px-8 pt-28 pb-20">
-        {isLocked && (
+        {isSold && (
+          <div className="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm font-semibold flex items-center gap-3">
+            <FiAlertCircle size={20} className="shrink-0" />
+            <span>This VIP number is sold out and no longer available for purchase.</span>
+          </div>
+        )}
+        {isReserved && !isSold && (
           <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-semibold flex items-center gap-3">
             <FiLock size={20} className="shrink-0" />
-            <span>This number is currently locked/reserved by another customer who is completing their purchase.</span>
+            <span>This number is currently locked/reserved by another customer completing checkout.</span>
           </div>
         )}
 

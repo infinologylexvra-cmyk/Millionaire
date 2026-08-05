@@ -22,7 +22,7 @@ const googleAuth = async (req, res, next) => {
 
     let user = await User.findOne({ $or: [{ googleId: payload.sub }, { email: payload.email }] });
 
-    const isAdminEmail = payload.email === 'dk897869@gmail.com' || payload.email === 'dk7314330@gmail.com' || (req.headers.referer && req.headers.referer.includes('/admin'));
+    const isFromAdminPortal = Boolean(req.headers.referer && req.headers.referer.includes('/admin'));
 
     if (user) {
       if (!user.googleId) {
@@ -30,7 +30,7 @@ const googleAuth = async (req, res, next) => {
         user.authProvider = 'google';
         user.isVerified = true;
       }
-      if (isAdminEmail && user.role !== 'admin') {
+      if (isFromAdminPortal && user.role !== 'admin') {
         user.role = 'admin';
       }
     } else {
@@ -41,7 +41,7 @@ const googleAuth = async (req, res, next) => {
         avatar: payload.picture,
         authProvider: 'google',
         isVerified: true,
-        role: isAdminEmail ? 'admin' : 'user',
+        role: isFromAdminPortal ? 'admin' : 'user',
       });
     }
 

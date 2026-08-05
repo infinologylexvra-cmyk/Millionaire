@@ -23,7 +23,7 @@ const AdminLogin = () => {
     try {
       const res = await loginWithGoogle(credentialResponse.credential);
       const authUser = res?.user || res;
-      if (authUser?.role !== 'admin' && !authUser?.isAdmin && authUser?.email !== 'dk897869@gmail.com') {
+      if (authUser?.role !== 'admin' && !authUser?.isAdmin) {
         await logout();
         toast.error('Access Denied: You do not have admin privileges');
         return;
@@ -40,7 +40,7 @@ const AdminLogin = () => {
       if (mode === 'login') {
         const res = await login({ email: data.email, password: data.password });
         const authUser = res?.user || res;
-        if (authUser?.role !== 'admin' && !authUser?.isAdmin && authUser?.email !== 'dk897869@gmail.com') {
+        if (authUser?.role !== 'admin' && !authUser?.isAdmin) {
           await logout();
           toast.error('Access Denied: Authorized Admin credentials required');
           return;
@@ -51,7 +51,7 @@ const AdminLogin = () => {
         const res = await registerUser({ name: data.name, email: data.email, password: data.password, role: 'admin' });
         const authUser = res?.user || res;
         toast.success('Admin Account Created Successfully!');
-        if (authUser?.role === 'admin' || authUser?.isAdmin || authUser?.email === 'dk897869@gmail.com') {
+        if (authUser?.role === 'admin' || authUser?.isAdmin) {
           navigate(ROUTES.ADMIN, { replace: true });
         } else {
           setMode('login');

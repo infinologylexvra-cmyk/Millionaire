@@ -10,12 +10,7 @@ import IndiaCitiesSection from '../../components/IndiaCities/IndiaCitiesSection'
 import DobNumberGenerator from '../../components/DobNumberGenerator/DobNumberGenerator';
 import api from '../../services/api';
 
-const VIP_NUMBERS = [
-  { num: '9898 1111 11', op: 'AIRTEL', price: '₹11,999' },
-  { num: '9810 9999 99', op: 'JIO', price: '₹7,999' },
-  { num: '9920 7777 77', op: 'VI', price: '₹4,999' },
-  { num: '9876 0000 00', op: 'BSNL', price: '₹2,499' },
-];
+// Removed static VIP_NUMBERS as per user request to only show real DB numbers
 
 const FEATURES = [
   { icon: FiShield, title: '100% TRUSTED', desc: 'Verified & Genuine Numbers' },
@@ -194,16 +189,16 @@ const Home = () => {
         <p className="text-xs sm:text-sm text-white/40 mb-8 sm:mb-14">Select your dream number from our premium collection</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-8 sm:mb-10">
-          {(vipNumbers.length > 0 ? vipNumbers : VIP_NUMBERS).map((item, i) => {
-            const isReal = !!item._id;
-            const num = isReal ? item.phoneNumber : item.num;
-            const op = isReal ? item.operator : item.op;
-            const price = isReal ? `₹${item.price.toLocaleString()}` : item.price;
+          {vipNumbers.length > 0 ? vipNumbers.map((item, i) => {
+            const isReal = true;
+            const num = item.phoneNumber;
+            const op = item.operator;
+            const price = `₹${item.price.toLocaleString()}`;
             
             return (
               <div
-                key={isReal ? item._id : i}
-                onClick={() => isReal ? navigate(`/numbers/${item._id}`) : navigate(ROUTES.NUMBERS)}
+                key={item._id}
+                onClick={() => navigate(`/numbers/${item._id}`)}
                 className="relative rounded-xl p-5 sm:p-6 text-center group overflow-hidden transition duration-300 hover:scale-[1.02] cursor-pointer"
                 style={{
                   background: 'linear-gradient(180deg, rgba(25,25,25,0.95), rgba(12,12,12,0.98))',
@@ -220,11 +215,15 @@ const Home = () => {
                 <p className="text-[10px] sm:text-[11px] text-white/50 uppercase tracking-[0.3em] mb-2 sm:mb-3">{op}</p>
                 <p className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">{price}</p>
                 <button className="w-full py-2 text-xs font-bold uppercase tracking-wider border border-[#d4af37]/40 text-[#d4af37] rounded hover:bg-[#d4af37] hover:text-black transition">
-                  {isReal ? 'Add to Cart / View' : 'View Details'}
+                  Add to Cart / View
                 </button>
               </div>
             );
-          })}
+          }) : (
+            <div className="col-span-1 sm:col-span-2 lg:col-span-4 text-center text-white/40 py-10">
+              New premium numbers arriving soon. Stay tuned!
+            </div>
+          )}
         </div>
 
         <Link

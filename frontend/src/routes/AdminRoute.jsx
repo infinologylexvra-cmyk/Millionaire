@@ -9,12 +9,8 @@ const AdminRoute = () => {
 
   if (loading) return <Loader fullScreen />;
 
-  if (!isAuthenticated) {
-    return <Navigate to={ROUTES.LOGIN} state={{ from: location }} replace />;
-  }
-
-  if (!isAdmin) {
-    return <Navigate to={ROUTES.HOME} replace />;
+  if (!isAuthenticated || !isAdmin) {
+    return <Navigate to={ROUTES.ADMIN_LOGIN} state={{ from: location }} replace />;
   }
 
   return <Outlet />;

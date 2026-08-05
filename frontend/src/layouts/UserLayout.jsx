@@ -13,7 +13,7 @@ const tabs = [
 ];
 
 const UserLayout = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   return (
     <div className="max-w-7xl mx-auto px-5 lg:px-8 pt-32 pb-20">
@@ -22,13 +22,28 @@ const UserLayout = () => {
           {initials(user?.name)}
         </div>
         <div>
-          <h1 className="font-display text-2xl text-cream">{user?.name}</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="font-display text-2xl text-cream">{user?.name}</h1>
+            {(isAdmin || user?.role === 'admin') && (
+              <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#d4af37]/20 text-[#d4af37] border border-[#d4af37]/40">
+                Admin
+              </span>
+            )}
+          </div>
           <p className="text-sm text-cream/40">{user?.email}</p>
         </div>
       </div>
 
       <div className="grid lg:grid-cols-[220px_1fr] gap-8">
         <aside className="flex lg:flex-col gap-2 overflow-x-auto no-scrollbar">
+          {(isAdmin || user?.role === 'admin') && (
+            <NavLink
+              to={ROUTES.ADMIN}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold whitespace-nowrap transition-colors bg-[#d4af37]/15 text-[#d4af37] border border-[#d4af37]/40 hover:bg-[#d4af37] hover:text-black mb-2"
+            >
+              👑 Admin Dashboard
+            </NavLink>
+          )}
           {tabs.map((tab) => (
             <NavLink
               key={tab.to}

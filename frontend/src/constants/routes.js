@@ -25,6 +25,7 @@ export const ROUTES = {
   ACCOUNT_ADDRESSES: '/account/addresses',
 
   ADMIN: '/admin',
+  ADMIN_LOGIN: '/admin/login',
   ADMIN_NUMBERS: '/admin/numbers',
   ADMIN_CATEGORIES: '/admin/categories',
   ADMIN_ORDERS: '/admin/orders',

@@ -8,6 +8,7 @@ import AdminRoute from './AdminRoute';
 
 import Home from '../pages/Home/Home';
 import AdminDashboard from '../pages/Admin/AdminDashboard';
+import AdminLogin from '../pages/Admin/AdminLogin';
 import AdminNumbers from '../pages/Admin/AdminNumbers';
 import AdminCategories from '../pages/Admin/AdminCategories';
 import AdminCoupons from '../pages/Admin/AdminCoupons';
@@ -81,6 +82,8 @@ const AppRoutes = () => (
 
       <Route path="*" element={<NotFound />} />
     </Route>
+
+    <Route path={ROUTES.ADMIN_LOGIN} element={<AdminLogin />} />
 
     <Route element={<AdminRoute />}>
       <Route element={<AdminLayout />}>

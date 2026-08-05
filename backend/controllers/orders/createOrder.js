@@ -47,7 +47,7 @@ const createOrder = async (req, res, next) => {
       coupon: couponDoc ? couponDoc._id : null,
       totalAmount,
       customerDetails,
-      paymentMethod: 'razorpay',
+      paymentMethod: req.body.paymentMethod || 'direct_upi',
       paymentStatus: 'pending',
       orderStatus: 'pending',
       statusHistory: [{ status: 'pending', note: 'Order created' }],

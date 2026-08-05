@@ -29,7 +29,7 @@ const orderSchema = new mongoose.Schema(
       pincode: { type: String },
       idProofType: { type: String, enum: ['Aadhar', 'PAN', 'Passport', 'Voter ID'], default: 'Aadhar' },
     },
-    paymentMethod: { type: String, enum: ['razorpay', 'cod'], default: 'razorpay' },
+    paymentMethod: { type: String, enum: ['upi', 'direct_upi', 'phonepe', 'gpay', 'paytm', 'bhim', 'cod', 'razorpay'], default: 'direct_upi' },
     paymentStatus: { type: String, enum: ['pending', 'paid', 'failed', 'refunded'], default: 'pending' },
     razorpayOrderId: { type: String },
     razorpayPaymentId: { type: String },

@@ -13,7 +13,7 @@ const GoldDivider = () => (
 const FAQS = [
   { q: 'What are VIP / Fancy numbers?', a: 'VIP or fancy numbers are special mobile numbers with memorable patterns like repeating digits, sequential sequences, or mirror patterns. They are often considered prestigious and are priced higher than regular numbers.' },
   { q: 'How do I purchase a number?', a: 'Simply browse our collection, select your favourite number, add it to cart, and complete the checkout. We will then contact you for document verification before SIM activation.' },
-  { q: 'Is the payment secure?', a: 'Yes! We use Razorpay, a PCI-DSS compliant payment gateway, to ensure your payment information is always safe and encrypted.' },
+  { q: 'Is the payment secure?', a: 'Yes! We use secure direct UPI and encrypted payment channels to ensure your payment information is always safe.' },
   { q: 'How long does delivery take?', a: 'Once verification is complete, your SIM is typically delivered within 2-5 business days anywhere in India.' },
   { q: 'Can I return a purchased number?', a: 'Due to the unique and exclusive nature of VIP numbers, returns are only accepted if the number delivered does not match what was ordered. Please read our Refund Policy for full details.' },
   { q: 'Do you support all operators?', a: 'Yes, we carry numbers from all major Indian telecom operators including Airtel, Jio, Vi (Vodafone-Idea), and BSNL.' },

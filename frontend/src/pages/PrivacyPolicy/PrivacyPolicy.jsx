@@ -40,7 +40,7 @@ const PrivacyPolicy = () => (
         <p>We use cookies to enhance your browsing experience and analyse site traffic. You can choose to disable cookies through your browser settings, though this may affect Platform functionality.</p>
       </Section>
       <Section title="5. Third-Party Services">
-        <p>We may use third-party services (e.g., Razorpay, Google, Cloudinary) that have their own privacy policies. We encourage you to review their policies.</p>
+        <p>We may use third-party services (e.g., Google, Cloudinary) that have their own privacy policies. We encourage you to review their policies.</p>
       </Section>
       <Section title="6. Your Rights">
         <p>You have the right to access, update, or delete your personal information. Contact us at <a href="mailto:hello@millionairenumbers.in" className="text-[#d4af37] hover:underline">hello@millionairenumbers.in</a> to exercise these rights.</p>

@@ -5,7 +5,7 @@ export const CURRENCY_SYMBOL = '\u20B9';
 
 export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 export const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
-export const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || '';
+
 
 export const CONTACT_EMAIL = 'hello@millionairenumbers.in';
 export const CONTACT_PHONE = '+91 98886 95199';

@@ -34,7 +34,7 @@ const Terms = () => (
         <p>You may use the Platform only for lawful purposes. You agree not to use the Platform in any way that could damage, disable, or impair the Platform, or interfere with any other party's use of it.</p>
       </Section>
       <Section title="3. Purchases & Payments">
-        <p>All purchases are subject to availability. We reserve the right to refuse or cancel an order at any time. Payments are processed securely through Razorpay. By completing a purchase, you represent that you are authorised to use the payment method provided.</p>
+        <p>All purchases are subject to availability. We reserve the right to refuse or cancel an order at any time. Payments are processed securely through Direct UPI / PhonePe / GPay. By completing a purchase, you represent that you are authorised to use the payment method provided.</p>
       </Section>
       <Section title="4. Number Activation">
         <p>VIP numbers are subject to telecom operator availability and regulatory approval. While we endeavour to fulfil all orders, Millionaire Numbers cannot guarantee activation timelines that are under the operator's control.</p>

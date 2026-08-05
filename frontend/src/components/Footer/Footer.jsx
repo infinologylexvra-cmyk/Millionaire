@@ -82,9 +82,10 @@ const Footer = () => (
 
         <div className="flex items-center gap-3 text-[11px] text-cream/40 tracking-wide">
           <span className="px-2.5 py-1 rounded-md border border-white/10">UPI</span>
+          <span className="px-2.5 py-1 rounded-md border border-white/10">PhonePe</span>
+          <span className="px-2.5 py-1 rounded-md border border-white/10">GPay</span>
           <span className="px-2.5 py-1 rounded-md border border-white/10">Visa</span>
           <span className="px-2.5 py-1 rounded-md border border-white/10">Mastercard</span>
-          <span className="px-2.5 py-1 rounded-md border border-white/10">Razorpay</span>
         </div>
 
         <div className="flex items-center gap-3">

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FiInstagram, FiFacebook, FiTwitter, FiLinkedin, FiMail } from 'react-icons/fi';
+import { FiInstagram, FiFacebook, FiTwitter, FiLinkedin, FiMail, FiPhone } from 'react-icons/fi';
 import Logo from '../Common/Logo';
 import { ROUTES } from '../../constants/routes';
 import { CONTACT_EMAIL, CONTACT_PHONE, SOCIAL_LINKS } from '../../constants/config';
@@ -55,10 +55,12 @@ const Footer = () => (
             India's most trusted marketplace for exclusive VIP, fancy and premium mobile numbers.
             Verified sellers, secure payments, doorstep delivery.
           </p>
-          <a href={`mailto:${CONTACT_EMAIL}`} className="mt-4 flex items-center gap-2 text-sm text-gold-400/90 hover:text-gold-300">
+          <a href={`mailto:${CONTACT_EMAIL}`} className="mt-4 flex items-center gap-2 text-sm text-gold-400/90 hover:text-gold-300 transition-colors">
             <FiMail size={14} /> {CONTACT_EMAIL}
           </a>
-          <p className="mt-1.5 text-sm text-cream/50">{CONTACT_PHONE}</p>
+          <a href={`tel:${CONTACT_PHONE}`} className="mt-2.5 flex items-center gap-2 text-sm text-gold-400/90 hover:text-gold-300 transition-colors">
+            <FiPhone size={14} /> {CONTACT_PHONE}
+          </a>
         </div>
 
         {footerColumns.map((col) => (

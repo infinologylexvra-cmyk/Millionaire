@@ -167,12 +167,12 @@ const AdminUsers = () => {
                       <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: user.role === 'admin' ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.08)', border: user.role === 'admin' ? '1px solid #d4af37' : 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: 700, color: user.role === 'admin' ? '#d4af37' : '#fff', flexShrink: 0 }}>
                         {initials(user.name)}
                       </div>
-                      <div>
-                        <span style={{ fontWeight: 600, fontSize: '14px', display: 'block' }}>{user.name}</span>
+                      <div style={{ maxWidth: '180px' }}>
+                        <span style={{ fontWeight: 600, fontSize: '14px', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={user.name}>{user.name}</span>
                       </div>
                     </div>
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: '13px', color: 'rgba(255,255,255,0.8)', fontFamily: 'monospace' }}>{user.email}</td>
+                  <td style={{ padding: '14px 16px', fontSize: '13px', color: 'rgba(255,255,255,0.8)', fontFamily: 'monospace', maxWidth: '180px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={user.email}>{user.email}</td>
                   <td style={{ padding: '14px 16px', fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>{user.phone || '—'}</td>
                   <td style={{ padding: '14px 16px' }}>
                     <button onClick={() => toggleRole(user)} title="Click to toggle role"

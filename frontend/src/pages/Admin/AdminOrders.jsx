@@ -144,9 +144,9 @@ const AdminOrders = () => {
                   <p style={{ fontWeight: 700, color: '#d4af37', margin: 0, fontSize: '13px' }}>#{order.orderNumber}</p>
                   <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', margin: 0 }}>{new Date(order.createdAt).toLocaleDateString()}</p>
                 </div>
-                <div>
-                  <p style={{ fontWeight: 600, margin: 0, fontSize: '13px' }}>{order.customerDetails?.fullName}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', margin: 0 }}>{order.customerDetails?.phone}</p>
+                <div style={{ maxWidth: '180px' }}>
+                  <p style={{ fontWeight: 600, margin: 0, fontSize: '13px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={order.customerDetails?.fullName}>{order.customerDetails?.fullName}</p>
+                  <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={order.customerDetails?.phone}>{order.customerDetails?.phone}</p>
                 </div>
                 <div>
                   {order.items?.map((item, i) => <p key={i} style={{ margin: 0, fontSize: '12px', fontFamily: 'monospace', color: '#d4af37' }}>{item.phoneNumber}</p>)}

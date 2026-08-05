@@ -64,7 +64,7 @@ const NumberDetails = () => {
   const navigate = useNavigate();
   const { addToCart, isInCart } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const [number, setNumber] = useState(null);
   const [loading, setLoading] = useState(true);

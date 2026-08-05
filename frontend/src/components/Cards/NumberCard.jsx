@@ -118,7 +118,7 @@ const NumberCard = ({ number, index = 0 }) => {
           </button>
         </div>
 
-        <p className="font-display text-2xl sm:text-[26px] tracking-wide text-cream mb-1 group-hover:text-gold-300 transition-colors">
+        <p className="font-display text-2xl sm:text-[26px] tracking-wide text-cream mb-1 group-hover:text-gold-300 transition-colors truncate" title={number.phoneNumber}>
           {formatPhone(number.phoneNumber)}
         </p>
         <p className="text-xs text-cream/40 mb-4">

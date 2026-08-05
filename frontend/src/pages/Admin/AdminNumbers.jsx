@@ -80,11 +80,19 @@ const AdminNumbers = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    if (name === 'phoneNumber') {
+      const numericValue = value.replace(/\D/g, '').slice(0, 10);
+      setFormData(prev => ({ ...prev, [name]: numericValue }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!/^[6-9]\d{9}$/.test(formData.phoneNumber)) {
+      return toast.error('Please enter a valid 10-digit Indian mobile number starting with 6-9.');
+    }
     setSubmitting(true);
     try {
       const payload = {

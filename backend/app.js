@@ -35,7 +35,8 @@ app.use(
 const allowedOrigins = [
   'http://localhost:5173',
   'https://millionaire-d2gp.onrender.com',
-    'https://www.millionaire-numbers.in',
+  'https://www.millionaire-numbers.in',
+  'https://millionaire-numbers.in',
   ...(process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',').map((o) => o.trim()) : [])
 ];
 

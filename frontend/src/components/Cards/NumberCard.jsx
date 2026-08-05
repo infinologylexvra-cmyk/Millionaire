@@ -34,6 +34,7 @@ const NumberCard = ({ number, index = 0 }) => {
   const isSold = number.isSold;
   const isReserved = number.isReserved && reservedByStr && reservedByStr !== userIdStr;
   const isLocked = isSold || isReserved;
+  const inCart = isInCart(number._id);
 
   const handleCardClick = (e) => {
     if (isSold) {

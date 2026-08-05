@@ -144,8 +144,13 @@ const NumberDetails = () => {
     ? Math.round(((number.originalPrice - number.price) / number.originalPrice) * 100)
     : 0;
   const categoryName = typeof number.category === 'object' ? number.category?.name : number.category;
+  const isLocked = number.isSold || (number.isReserved && number.reservedBy && number.reservedBy !== user?._id);
 
   const handleCartAction = () => {
+    if (isLocked) {
+      toast.error('This number is currently locked/reserved by another customer');
+      return;
+    }
     if (inCart) {
       navigate(ROUTES.CART);
       return;
@@ -155,6 +160,10 @@ const NumberDetails = () => {
   };
 
   const handleBuyNow = () => {
+    if (isLocked) {
+      toast.error('This number is currently locked/reserved by another customer');
+      return;
+    }
     if (!inCart) addToCart(number);
     navigate(ROUTES.CHECKOUT);
   };
@@ -176,6 +185,13 @@ const NumberDetails = () => {
     <>
       <SEO title={`${formatPhone(number.phoneNumber)} - Premium ${number.pattern} Number`} />
       <div className="max-w-7xl mx-auto px-5 lg:px-8 pt-28 pb-20">
+        {isLocked && (
+          <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-semibold flex items-center gap-3">
+            <FiLock size={20} className="shrink-0" />
+            <span>This number is currently locked/reserved by another customer who is completing their purchase.</span>
+          </div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -252,11 +268,11 @@ const NumberDetails = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="dark" size="lg" onClick={handleCartAction} className="flex-1">
-                <FiShoppingBag /> {inCart ? 'Go to Cart' : 'Add to Cart'}
+              <Button variant="dark" size="lg" onClick={handleCartAction} disabled={isLocked} className="flex-1">
+                <FiShoppingBag /> {isLocked ? 'Locked 🔒' : inCart ? 'Go to Cart' : 'Add to Cart'}
               </Button>
-              <Button variant="primary" size="lg" onClick={handleBuyNow} className="flex-1">
-                Buy Now
+              <Button variant="primary" size="lg" onClick={handleBuyNow} disabled={isLocked} className="flex-1">
+                {isLocked ? 'Reserved' : 'Buy Now'}
               </Button>
             </div>
           </div>

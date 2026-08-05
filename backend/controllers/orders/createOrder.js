@@ -19,6 +19,13 @@ const createOrder = async (req, res, next) => {
       return error(res, 409, 'One or more selected numbers are no longer available', unavailable);
     }
 
+    // Check if any number is reserved by another user
+    for (const n of numbers) {
+      if (n.isReserved && n.reservedBy && n.reservedBy.toString() !== req.user._id.toString()) {
+        return error(res, 409, `Number ${n.phoneNumber} is currently reserved/locked by another customer`);
+      }
+    }
+
     const subtotal = numbers.reduce((sum, n) => sum + n.price, 0);
 
     let discount = 0;
@@ -52,6 +59,14 @@ const createOrder = async (req, res, next) => {
       orderStatus: 'pending',
       statusHistory: [{ status: 'pending', note: 'Order created' }],
     });
+
+    // Mark numbers as reserved/locked by this user
+    for (const n of numbers) {
+      n.isReserved = true;
+      n.reservedBy = req.user._id;
+      n.reservedAt = new Date();
+      await n.save();
+    }
 
     return success(res, 201, 'Order created successfully', order);
   } catch (err) {

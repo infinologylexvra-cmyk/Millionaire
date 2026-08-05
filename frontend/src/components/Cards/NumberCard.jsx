@@ -25,13 +25,18 @@ const formatPhone = (num = '') => num.replace(/(\d{5})(\d{5})/, '$1 $2');
 const NumberCard = ({ number, index = 0 }) => {
   const { addToCart, isInCart } = useCart();
   const { isWishlisted, toggleWishlist } = useWishlist();
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const inCart = isInCart(number._id);
+  const isLocked = number.isSold || (number.isReserved && number.reservedBy && number.reservedBy !== user?._id);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
+    if (isLocked) {
+      toast.error('This number is locked/reserved by another customer');
+      return;
+    }
     if (inCart) {
       navigate(ROUTES.CART);
       return;
@@ -63,14 +68,24 @@ const NumberCard = ({ number, index = 0 }) => {
     >
       <Link
         to={ROUTES.NUMBER_DETAILS(number._id)}
-        className="group block card-surface rounded-2xl p-5 hover:border-gold-500/40 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
+        className={classNames(
+          'group block card-surface rounded-2xl p-5 transition-all duration-300 relative overflow-hidden',
+          isLocked ? 'opacity-75 border-amber-500/30' : 'hover:border-gold-500/40 hover:-translate-y-1'
+        )}
       >
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-gold-500/5 rounded-full blur-2xl group-hover:bg-gold-500/10 transition-colors" />
 
         <div className="flex items-center justify-between mb-4">
-          <span className={classNames('text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-full border', patternColors[number.pattern] || 'text-cream/60 border-white/15')}>
-            {number.pattern}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className={classNames('text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-full border', patternColors[number.pattern] || 'text-cream/60 border-white/15')}>
+              {number.pattern}
+            </span>
+            {isLocked && (
+              <span className="text-[10px] tracking-widest uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">
+                Locked 🔒
+              </span>
+            )}
+          </div>
           <button onClick={handleWishlist} className="text-cream/40 hover:text-gold-400 transition-colors" aria-label="Wishlist">
             <FiHeart size={17} className={isWishlisted(number._id) ? 'fill-gold-500 text-gold-500' : ''} />
           </button>
@@ -90,16 +105,26 @@ const NumberCard = ({ number, index = 0 }) => {
             )}
             <p className="text-lg font-semibold text-gold-400">{formatINR(number.price)}</p>
           </div>
-          <button
-            onClick={handleAddToCart}
-            className={classNames(
-              'w-10 h-10 rounded-full flex items-center justify-center transition-colors',
-              inCart ? 'gold-gradient-bg text-charcoal' : 'bg-white/5 text-cream/70 hover:bg-gold-500/20 hover:text-gold-300'
-            )}
-            aria-label="Add to cart"
-          >
-            {inCart ? <FiEye size={16} /> : <FiShoppingBag size={16} />}
-          </button>
+          {isLocked ? (
+            <button
+              onClick={handleAddToCart}
+              className="px-3 py-1.5 rounded-full bg-amber-500/15 text-amber-300 text-xs font-bold border border-amber-500/30 flex items-center gap-1 cursor-not-allowed"
+              title="Locked by another user"
+            >
+              Locked 🔒
+            </button>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              className={classNames(
+                'w-10 h-10 rounded-full flex items-center justify-center transition-colors',
+                inCart ? 'gold-gradient-bg text-charcoal' : 'bg-white/5 text-cream/70 hover:bg-gold-500/20 hover:text-gold-300'
+              )}
+              aria-label="Add to cart"
+            >
+              {inCart ? <FiEye size={16} /> : <FiShoppingBag size={16} />}
+            </button>
+          )}
         </div>
       </Link>
     </motion.div>

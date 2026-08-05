@@ -53,11 +53,37 @@ const verifyPayment = async (req, res, next) => {
       order.paymentStatus = 'paid';
       order.orderStatus = 'confirmed';
       order.statusHistory.push({ status: 'confirmed', note: 'Payment approved by admin' });
+
+      // Mark all numbers in this order as sold (removes them from store)
+      const NumberModel = require('../../models/Number');
+      for (const item of order.items) {
+        const numId = item.number || item._id;
+        if (numId) {
+          await NumberModel.findByIdAndUpdate(numId, {
+            isSold: true,
+            isReserved: false,
+            soldTo: order.user,
+            soldAt: new Date(),
+          });
+        }
+      }
     } else if (action === 'reject') {
       order.paymentVerificationStatus = 'rejected';
       order.paymentStatus = 'failed';
       order.orderStatus = 'pending';
       order.statusHistory.push({ status: 'pending', note: 'Payment rejected by admin - please re-submit' });
+
+      // Release reserved numbers
+      const NumberModel = require('../../models/Number');
+      for (const item of order.items) {
+        const numId = item.number || item._id;
+        if (numId) {
+          await NumberModel.findByIdAndUpdate(numId, {
+            isReserved: false,
+            reservedBy: null,
+          });
+        }
+      }
     } else {
       return error(res, 400, 'Invalid action. Use "approve" or "reject"');
     }

@@ -102,20 +102,18 @@ const QRPayment = () => {
   };
 
   const handleSubmit = async () => {
-    if (method === 'utr' && !utrNumber.trim()) return toast.error('Please enter UTR/Transaction number');
-    if (method === 'screenshot' && !screenshot) return toast.error('Please upload payment screenshot');
+    if (!utrNumber.trim()) return toast.error('Please enter 12-digit UTR / Transaction number');
 
     setSubmitting(true);
     try {
       const formData = new FormData();
-      if (method === 'utr') formData.append('utrNumber', utrNumber.trim());
-      else formData.append('screenshot', screenshot);
+      formData.append('utrNumber', utrNumber.trim());
 
       await api.post(`/orders/${orderId}/submit-payment`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-      toast.success('Payment details submitted!');
+      toast.success('UTR Number submitted successfully!');
       navigate(`/order-success/${orderId}`);
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to submit payment');
+      toast.error(err.response?.data?.message || 'Failed to submit UTR number');
     } finally {
       setSubmitting(false);
     }
@@ -285,8 +283,8 @@ const QRPayment = () => {
                 
                 {[
                   { icon: <FiCheckCircle />, title: '1. Make Payment', desc: 'Complete the payment using UPI' },
-                  { icon: <FiUploadCloud />, title: '2. Submit Proof', desc: 'Click on the button below and upload screenshot' },
-                  { icon: <FiClock />, title: '3. We Will Verify', desc: 'We will verify your payment and confirm your order' }
+                  { icon: <FiUploadCloud />, title: '2. Submit UTR', desc: 'Enter 12-digit UTR Number after payment' },
+                  { icon: <FiClock />, title: '3. We Will Verify', desc: 'We will verify your UTR and confirm your order' }
                 ].map((step, i) => (
                   <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '30%', position: 'relative', zIndex: 1 }}>
                     <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#0b0b0b', border: '1px solid #d4af37', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#d4af37', marginBottom: '16px' }}>
@@ -302,7 +300,7 @@ const QRPayment = () => {
             {/* Action Buttons */}
             <button onClick={() => setStep('confirm')}
               style={{ width: '100%', padding: '18px', background: '#d4af37', color: '#000', border: 'none', borderRadius: '8px', fontWeight: 800, fontSize: '16px', cursor: 'pointer', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-              <FiUploadCloud style={{ fontSize: '20px' }} /> I Have Paid — Submit Proof
+              <FiUploadCloud style={{ fontSize: '20px' }} /> I Have Paid — Enter UTR Number
             </button>
             <button onClick={() => navigate(-1)}
               style={{ width: '100%', padding: '16px', background: 'transparent', color: '#d4af37', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', fontWeight: 600, fontSize: '15px', cursor: 'pointer' }}>
@@ -314,52 +312,23 @@ const QRPayment = () => {
         {step === 'confirm' && (
           <div style={{ ...containerStyle, padding: '40px 32px' }}>
             <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <div style={{ fontSize: '48px', marginBottom: '16px' }}>📤</div>
-              <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#d4af37', margin: '0 0 12px', fontFamily: 'serif' }}>Submit Proof</h1>
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', margin: 0 }}>Upload screenshot or enter UTR to confirm your payment of ₹{amount.toLocaleString()}</p>
+              <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔢</div>
+              <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#d4af37', margin: '0 0 12px', fontFamily: 'serif' }}>Enter UTR Number</h1>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', margin: 0 }}>Enter 12-digit UTR/Transaction Reference number to confirm your payment of ₹{amount.toLocaleString()}</p>
             </div>
 
-            <div style={{ display: 'flex', background: '#000', borderRadius: '10px', padding: '6px', marginBottom: '24px', gap: '6px', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <button onClick={() => setMethod('screenshot')}
-                style={{ flex: 1, padding: '12px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '14px', transition: 'all 0.2s', background: method === 'screenshot' ? '#d4af37' : 'transparent', color: method === 'screenshot' ? '#000' : 'rgba(255,255,255,0.5)' }}>
-                📸 Screenshot
-              </button>
-              <button onClick={() => setMethod('utr')}
-                style={{ flex: 1, padding: '12px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '14px', transition: 'all 0.2s', background: method === 'utr' ? '#d4af37' : 'transparent', color: method === 'utr' ? '#000' : 'rgba(255,255,255,0.5)' }}>
-                🔢 UTR Number
-              </button>
+            <div style={{ marginBottom: '32px' }}>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: '#d4af37', textTransform: 'uppercase', letterSpacing: '0.08em' }}>12-Digit UTR / Transaction Reference No.</span>
+                <input type="text" value={utrNumber} onChange={e => setUtrNumber(e.target.value)} placeholder="e.g. 509124067312"
+                  style={{ background: '#000', border: '1px solid rgba(212,175,55,0.5)', borderRadius: '10px', padding: '16px', color: '#fff', fontSize: '20px', fontFamily: 'monospace', letterSpacing: '0.08em', outline: 'none', textAlign: 'center' }} />
+                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', margin: 0, textAlign: 'center' }}>Find the 12-digit UTR/Ref number in your PhonePe / GPay / Paytm / BHIM transaction history.</p>
+              </label>
             </div>
-
-            {method === 'screenshot' ? (
-              <div style={{ marginBottom: '32px' }}>
-                {screenshotPreview ? (
-                  <div style={{ position: 'relative' }}>
-                    <img src={screenshotPreview} alt="Screenshot" style={{ width: '100%', height: '300px', objectFit: 'contain', background: '#000', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '12px', marginBottom: '12px' }} />
-                    <button onClick={() => { setScreenshot(null); setScreenshotPreview(''); }} style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(0,0,0,0.7)', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: '20px', cursor: 'pointer', fontSize: '12px' }}>Change Image</button>
-                  </div>
-                ) : (
-                  <label style={{ display: 'block', background: '#000', border: '2px dashed rgba(212,175,55,0.4)', borderRadius: '12px', padding: '48px 24px', textAlign: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
-                    <FiUploadCloud style={{ fontSize: '48px', color: '#d4af37', marginBottom: '16px' }} />
-                    <p style={{ color: '#d4af37', fontWeight: 600, margin: '0 0 8px', fontSize: '16px' }}>Click to upload payment screenshot</p>
-                    <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '13px', margin: 0 }}>JPG, PNG, WEBP accepted</p>
-                    <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
-                  </label>
-                )}
-              </div>
-            ) : (
-              <div style={{ marginBottom: '32px' }}>
-                <label style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>UTR / Transaction Reference No.</span>
-                  <input type="text" value={utrNumber} onChange={e => setUtrNumber(e.target.value)} placeholder="e.g. 509124067312"
-                    style={{ background: '#000', border: '1px solid rgba(212,175,55,0.5)', borderRadius: '10px', padding: '16px', color: '#fff', fontSize: '18px', fontFamily: 'monospace', letterSpacing: '0.05em', outline: 'none' }} />
-                  <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px', margin: 0 }}>Find the 12-digit UTR/Ref number in your UPI app transaction history.</p>
-                </label>
-              </div>
-            )}
 
             <button onClick={handleSubmit} disabled={submitting}
               style={{ width: '100%', padding: '18px', background: submitting ? '#8a7530' : '#d4af37', color: '#000', border: 'none', borderRadius: '8px', fontWeight: 800, fontSize: '16px', cursor: submitting ? 'wait' : 'pointer', marginBottom: '16px', boxShadow: '0 4px 12px rgba(212,175,55,0.2)' }}>
-              {submitting ? 'Submitting...' : '📨 Submit Payment Details'}
+              {submitting ? 'Submitting...' : '📨 Submit UTR & Verify'}
             </button>
             <button onClick={() => setStep('qr')}
               style={{ width: '100%', padding: '16px', background: 'transparent', color: 'rgba(255,255,255,0.6)', border: 'none', borderRadius: '8px', fontWeight: 600, fontSize: '15px', cursor: 'pointer' }}>

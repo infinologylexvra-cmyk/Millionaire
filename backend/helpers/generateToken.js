@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const generateToken = (id, role = 'user') => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE || '7d',
+    expiresIn: process.env.JWT_EXPIRE || '1d',
   });
 };
 
@@ -16,7 +16,7 @@ const generateShortToken = (payload, expiresIn = '15m') => {
 const verifyToken = (token) => jwt.verify(token, process.env.JWT_SECRET);
 
 const cookieOptions = () => {
-  const days = parseInt(process.env.JWT_COOKIE_EXPIRE, 10) || 7;
+  const days = parseInt(process.env.JWT_COOKIE_EXPIRE, 10) || 1;
   return {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

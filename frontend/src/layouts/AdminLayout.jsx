@@ -16,11 +16,8 @@ const navItems = [
   { label: 'Categories', to: ROUTES.ADMIN_CATEGORIES, icon: FiFolder },
   { label: 'Orders', to: ROUTES.ADMIN_ORDERS, icon: FiShoppingBag },
   { label: 'Coupons', to: ROUTES.ADMIN_COUPONS, icon: FiTag },
-  { label: 'Reviews', to: ROUTES.ADMIN_REVIEWS, icon: FiStar },
   { label: 'Messages', to: ROUTES.ADMIN_CONTACTS, icon: FiMail },
   { label: 'Users', to: ROUTES.ADMIN_USERS, icon: FiUsers },
-  { label: 'Banners', to: ROUTES.ADMIN_BANNERS, icon: FiImage },
-  { label: 'Settings', to: ROUTES.ADMIN_SETTINGS, icon: FiSettings },
 ];
 
 const AdminLayout = () => {

@@ -15,7 +15,12 @@ const getAllUsers = async (req, res, next) => {
     }
 
     const [users, total] = await Promise.all([
-      User.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+      User.find(filter)
+        .select('-password')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
       User.countDocuments(filter),
     ]);
 

@@ -74,7 +74,8 @@ const getNumbers = async (req, res, next) => {
         .populate('category', 'name slug icon')
         .sort(sortOption)
         .skip(skip)
-        .limit(limit),
+        .limit(limit)
+        .lean(),
       NumberModel.countDocuments(filter),
     ]);
 

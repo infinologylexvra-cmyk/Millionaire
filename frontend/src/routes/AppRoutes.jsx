@@ -12,7 +12,6 @@ import AdminLogin from '../pages/Admin/AdminLogin';
 import AdminNumbers from '../pages/Admin/AdminNumbers';
 import AdminCategories from '../pages/Admin/AdminCategories';
 import AdminCoupons from '../pages/Admin/AdminCoupons';
-import AdminBanners from '../pages/Admin/AdminBanners';
 import Numbers from '../pages/Numbers/Numbers';
 import NumberDetails from '../pages/NumberDetails/NumberDetails';
 import Search from '../pages/Search/Search';
@@ -39,10 +38,8 @@ import Orders from '../pages/Orders/Orders';
 import Wishlist from '../pages/Wishlist/Wishlist';
 
 import AdminOrders from '../pages/Admin/AdminOrders';
-import AdminReviews from '../pages/Admin/AdminReviews';
 import AdminMessages from '../pages/Admin/AdminMessages';
 import AdminUsers from '../pages/Admin/AdminUsers';
-import AdminSettings from '../pages/Admin/AdminSettings';
 
 import { ROUTES } from '../constants/routes';
 
@@ -92,11 +89,8 @@ const AppRoutes = () => (
         <Route path={ROUTES.ADMIN_CATEGORIES} element={<AdminCategories />} />
         <Route path={ROUTES.ADMIN_ORDERS} element={<AdminOrders />} />
         <Route path={ROUTES.ADMIN_COUPONS} element={<AdminCoupons />} />
-        <Route path={ROUTES.ADMIN_REVIEWS} element={<AdminReviews />} />
         <Route path={ROUTES.ADMIN_CONTACTS} element={<AdminMessages />} />
         <Route path={ROUTES.ADMIN_USERS} element={<AdminUsers />} />
-        <Route path={ROUTES.ADMIN_BANNERS} element={<AdminBanners />} />
-        <Route path={ROUTES.ADMIN_SETTINGS} element={<AdminSettings />} />
       </Route>
     </Route>
   </Routes>

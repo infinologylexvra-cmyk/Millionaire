@@ -9,8 +9,8 @@ import { FiShield, FiCheckCircle, FiUploadCloud, FiClock, FiLock, FiCheck } from
 const GPayIcon = "https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg";
 const PhonePeIcon = "https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg";
 const PaytmIcon = "https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg";
-// Using base64 for BHIM and generic UPI to prevent hotlinking breaks
-const BhimIcon = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjRjE4MjI2IiBkPSJNMzQwLjUgMTEwaC0xNTh2MjY3bDExOS0xMzVoMzl6Ii8+PHBhdGggZmlsbD0iIzI3QTE1OSIgZD0iTTE4Mi41IDI1OHYxNDRoMTk4TDI0NSAyNTh6Ii8+PC9zdmc+";
+const AmazonPayIcon = "https://upload.wikimedia.org/wikipedia/commons/e/e3/Amazon_Pay_logo.svg";
+const BhimIcon = "https://upload.wikimedia.org/wikipedia/commons/e/e9/BHIM_logo.svg";
 const UpiIcon = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgMzAwIj48cGF0aCBmaWxsPSIjMTMzYzY0IiBkPSJNMTQ0IDYwaDkydjQwSDExOHYxNDBINzhWMzBoMTMweiIvPjwvc3ZnPg==";
 
 const CircularTimer = ({ timeLeft }) => {
@@ -138,6 +138,7 @@ const QRPayment = () => {
       case 'Google Pay': return `gpay://upi/pay?${upiBase}`;
       case 'PhonePe': return `phonepe://pay?${upiBase}`;
       case 'Paytm': return `paytmmp://pay?${upiBase}`;
+      case 'Amazon Pay': return `amazonpay://pay?${upiBase}`;
       case 'BHIM': return `bhim://pay?${upiBase}`;
       default: return upiLink;
     }
@@ -218,11 +219,12 @@ const QRPayment = () => {
 
               {/* UPI Apps Grid */}
               <p style={{ fontSize: '16px', fontWeight: 700, margin: '0 0 20px' }}>Pay using UPI Apps</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
                 {[
                   { name: 'Google Pay', icon: GPayIcon },
                   { name: 'PhonePe', icon: PhonePeIcon },
                   { name: 'Paytm', icon: PaytmIcon },
+                  { name: 'Amazon Pay', icon: AmazonPayIcon },
                   { name: 'BHIM', icon: BhimIcon },
                   { name: 'Any UPI App', icon: UpiIcon },
                 ].map((app) => (

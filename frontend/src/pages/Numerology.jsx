@@ -43,7 +43,7 @@ const Numerology = () => {
       }
 
       // To ensure we always return 5 numbers, we'll fetch all numbers and do a custom sort/filter
-      const res = await api.get('/numbers?limit=100');
+      const res = await api.get('/numbers?limit=100&minPrice=2499');
       const allNumbers = res.data?.data || [];
 
       // Sort numbers by how well they match the search string (if it's long enough), 
@@ -139,7 +139,7 @@ const Numerology = () => {
                     <p className="text-white/40 text-sm mt-1">{number.operator} • ₹{number.price.toLocaleString()}</p>
                   </div>
                   <button 
-                    onClick={() => navigate(`/number/${number._id}`)}
+                    onClick={() => navigate(`/numbers/${number._id}`)}
                     className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-[#d4af37] group-hover:bg-[#d4af37] group-hover:text-black transition-colors"
                   >
                     →

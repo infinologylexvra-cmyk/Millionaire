@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaCrown, FaGem, FaStar, FaHeart } from 'react-icons/fa';
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { FiCheckCircle, FiShield, FiPhoneCall, FiZap, FiChevronRight } from 'react-icons/fi';
 import { ROUTES } from '../../constants/routes';
@@ -8,6 +8,7 @@ import { WHATSAPP_NUMBER } from '../../constants/config';
 import CityNetworkMap from '../../components/CityNetworkMap/CityNetworkMap';
 import IndiaCitiesSection from '../../components/IndiaCities/IndiaCitiesSection';
 import DobNumberGenerator from '../../components/DobNumberGenerator/DobNumberGenerator';
+import api from '../../services/api';
 
 const VIP_NUMBERS = [
   { num: '9898 1111 11', op: 'AIRTEL', price: '₹11,999' },
@@ -55,8 +56,18 @@ const Home = () => {
   const heroRef = useRef(null);
   const textRef = useRef(null);
   const logoRef = useRef(null);
+  const navigate = useNavigate();
+  const [vipNumbers, setVipNumbers] = useState([]);
 
   useEffect(() => {
+    // Fetch real VIP numbers
+    api.get('/numbers?limit=4&minPrice=2499&sort=popular')
+      .then(res => {
+        if (res.data?.data) {
+          setVipNumbers(res.data.data);
+        }
+      })
+      .catch(err => console.error('Failed to fetch VIP numbers', err));
     const ctx = gsap.context(() => {
       // Animate text elements
       gsap.from(textRef.current.children, {
@@ -183,29 +194,37 @@ const Home = () => {
         <p className="text-xs sm:text-sm text-white/40 mb-8 sm:mb-14">Select your dream number from our premium collection</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-8 sm:mb-10">
-          {VIP_NUMBERS.map(({ num, op, price }, i) => (
-            <div
-              key={i}
-              className="relative rounded-xl p-5 sm:p-6 text-center group overflow-hidden transition duration-300 hover:scale-[1.02]"
-              style={{
-                background: 'linear-gradient(180deg, rgba(25,25,25,0.95), rgba(12,12,12,0.98))',
-                border: '1px solid rgba(212,175,55,0.18)',
-              }}
-            >
-              <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-transparent opacity-0 group-hover:opacity-100 transition" />
-              <p
-                className="text-xl sm:text-2xl font-bold tracking-widest mb-2"
-                style={{ background: 'linear-gradient(135deg, #f5d76e, #d4af37)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+          {(vipNumbers.length > 0 ? vipNumbers : VIP_NUMBERS).map((item, i) => {
+            const isReal = !!item._id;
+            const num = isReal ? item.phoneNumber : item.num;
+            const op = isReal ? item.operator : item.op;
+            const price = isReal ? `₹${item.price.toLocaleString()}` : item.price;
+            
+            return (
+              <div
+                key={isReal ? item._id : i}
+                onClick={() => isReal ? navigate(`/numbers/${item._id}`) : navigate(ROUTES.NUMBERS)}
+                className="relative rounded-xl p-5 sm:p-6 text-center group overflow-hidden transition duration-300 hover:scale-[1.02] cursor-pointer"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(25,25,25,0.95), rgba(12,12,12,0.98))',
+                  border: '1px solid rgba(212,175,55,0.18)',
+                }}
               >
-                {num}
-              </p>
-              <p className="text-[10px] sm:text-[11px] text-white/50 uppercase tracking-[0.3em] mb-2 sm:mb-3">{op}</p>
-              <p className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">{price}</p>
-              <button className="w-full py-2 text-xs font-bold uppercase tracking-wider border border-[#d4af37]/40 text-[#d4af37] rounded hover:bg-[#d4af37] hover:text-black transition">
-                View Details
-              </button>
-            </div>
-          ))}
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#d4af37]/60 to-transparent opacity-0 group-hover:opacity-100 transition" />
+                <p
+                  className="text-xl sm:text-2xl font-bold tracking-widest mb-2"
+                  style={{ background: 'linear-gradient(135deg, #f5d76e, #d4af37)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                >
+                  {num}
+                </p>
+                <p className="text-[10px] sm:text-[11px] text-white/50 uppercase tracking-[0.3em] mb-2 sm:mb-3">{op}</p>
+                <p className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">{price}</p>
+                <button className="w-full py-2 text-xs font-bold uppercase tracking-wider border border-[#d4af37]/40 text-[#d4af37] rounded hover:bg-[#d4af37] hover:text-black transition">
+                  {isReal ? 'Add to Cart / View' : 'View Details'}
+                </button>
+              </div>
+            );
+          })}
         </div>
 
         <Link

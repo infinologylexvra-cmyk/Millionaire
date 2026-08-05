@@ -217,26 +217,60 @@ const QRPayment = () => {
                 <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
               </div>
 
-              {/* UPI Apps Grid */}
-              <p style={{ fontSize: '16px', fontWeight: 700, margin: '0 0 20px' }}>Pay using UPI Apps</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
-                {[
-                  { name: 'Google Pay', icon: GPayIcon },
-                  { name: 'PhonePe', icon: PhonePeIcon },
-                  { name: 'Paytm', icon: PaytmIcon },
-                  { name: 'Amazon Pay', icon: AmazonPayIcon },
-                  { name: 'BHIM', icon: BhimIcon },
-                  { name: 'Any UPI App', icon: UpiIcon },
-                ].map((app) => (
-                  <a key={app.name} href={getAppIntent(app.name)}
-                       style={{ border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '16px 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.02)', transition: 'all 0.2s', textDecoration: 'none' }}>
-                    <div style={{ height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
-                      <img src={app.icon} alt={app.name} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
-                    </div>
-                    <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>{app.name}</span>
-                  </a>
-                ))}
+              {/* UPI Apps Section - 4 Apps Launcher */}
+              <div style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(212,175,55,0.25)', borderRadius: '16px', padding: '20px', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#d4af37', letterSpacing: '0.05em' }}>
+                    ⚡ ONE-TAP DIRECT APP LAUNCHER
+                  </span>
+                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#22c55e', background: 'rgba(34,197,94,0.1)', padding: '2px 8px', borderRadius: '12px', border: '1px solid rgba(34,197,94,0.3)' }}>
+                    Auto ₹{amount.toLocaleString()}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
+                  {[
+                    { name: 'PhonePe', icon: PhonePeIcon, bg: 'rgba(95, 37, 159, 0.25)', border: 'rgba(168, 85, 247, 0.4)' },
+                    { name: 'GPay', icon: GPayIcon, bg: 'rgba(66, 133, 244, 0.25)', border: 'rgba(59, 130, 246, 0.4)' },
+                    { name: 'Paytm', icon: PaytmIcon, bg: 'rgba(0, 186, 242, 0.25)', border: 'rgba(6, 182, 212, 0.4)' },
+                    { name: 'BHIM', icon: '/bhim_logo.jpg', bg: 'rgba(5, 150, 105, 0.25)', border: 'rgba(16, 185, 129, 0.4)' },
+                  ].map((app) => (
+                    <a
+                      key={app.name}
+                      href={getAppIntent(app.name === 'GPay' ? 'Google Pay' : app.name)}
+                      className="flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 text-decoration-none"
+                      style={{
+                        background: app.bg,
+                        border: `1px solid ${app.border}`,
+                        boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+                        textDecoration: 'none',
+                        minHeight: '100px'
+                      }}
+                    >
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-2 overflow-hidden bg-black/60 p-1.5 border border-white/10 shrink-0">
+                        <img src={app.icon} alt={app.name} className="w-full h-full object-contain" />
+                      </div>
+                      <span className="text-white text-xs font-bold tracking-wide text-center">{app.name}</span>
+                    </a>
+                  ))}
+                </div>
+
+                {/* Direct Full Width UPI Launcher Button */}
+                <a
+                  href={upiLink}
+                  className="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl font-extrabold text-xs sm:text-sm text-black transition-all hover:opacity-90 active:scale-98 text-center"
+                  style={{
+                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    boxShadow: '0 4px 20px rgba(16,185,129,0.3)',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <span>⚡</span>
+                  <span>Pay ₹{amount.toLocaleString()} via Any Installed UPI App</span>
+                  <span>🚀</span>
+                </a>
               </div>
+
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: 'rgba(255,255,255,0.4)', fontSize: '12px' }}>
                 <FiLock style={{ color: '#d4af37' }} />
                 You will be redirected to the selected app to complete the payment

@@ -25,6 +25,9 @@ const googleAuth = async (req, res, next) => {
     const isFromAdminPortal = Boolean(req.headers.referer && req.headers.referer.includes('/admin'));
 
     if (user) {
+      if (user.isActive === false) {
+        return error(res, 403, 'Your account has been deactivated by administrator. Please contact support.');
+      }
       if (!user.googleId) {
         user.googleId = payload.sub;
         user.authProvider = 'google';

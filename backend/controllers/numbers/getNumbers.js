@@ -59,9 +59,12 @@ const getNumbers = async (req, res, next) => {
     filter.price = { $gte: effectiveMin };
     if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
 
-    if (search) {
-      const regex = new RegExp(escapeRegex(search), 'i');
-      filter.$or = [{ phoneNumber: regex }, { description: regex }, { tags: regex }];
+    if (search && search.trim()) {
+      const trimmed = search.trim();
+      const cleanSearch = trimmed.replace(/\s+/g, '');
+      const regex = new RegExp(escapeRegex(trimmed), 'i');
+      const cleanRegex = new RegExp(escapeRegex(cleanSearch), 'i');
+      filter.$or = [{ phoneNumber: regex }, { phoneNumber: cleanRegex }, { description: regex }, { tags: regex }];
     }
 
     const sortOption = sortMap[sort] || sortMap.newest;

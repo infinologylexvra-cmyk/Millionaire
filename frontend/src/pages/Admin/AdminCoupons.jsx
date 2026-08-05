@@ -171,7 +171,7 @@ const AdminCoupons = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-white/60 uppercase mb-2">Valid Until</label>
-                  <input type="date" value={formData.validUntil} onChange={(e) => setFormData({...formData, validUntil: e.target.value})} className="w-full bg-black border border-[#d4af37]/30 rounded p-3 text-white focus:outline-none focus:border-[#d4af37]" />
+                  <input type="date" min={new Date().toISOString().split('T')[0]} value={formData.validUntil} onChange={(e) => setFormData({...formData, validUntil: e.target.value})} className="w-full bg-black border border-[#d4af37]/30 rounded p-3 text-white focus:outline-none focus:border-[#d4af37]" style={{ colorScheme: 'dark' }} />
                 </div>
                 <div className="flex items-center mt-6">
                   <label className="flex items-center gap-2 cursor-pointer">

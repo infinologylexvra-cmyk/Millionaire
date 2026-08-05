@@ -74,10 +74,12 @@ const DobNumberGenerator = () => {
               required
               value={dob}
               placeholder="DD-MM-YYYY"
+              min="1940-01-01"
+              max={new Date().toISOString().split('T')[0]}
               onFocus={() => setInputType('date')}
               onBlur={() => { if (!dob) setInputType('text'); }}
               onChange={(e) => setDob(e.target.value)}
-              className="w-full sm:w-72 bg-black/50 border border-[#d4af37]/30 text-white placeholder-white/50 rounded-full py-3.5 pl-12 pr-6 focus:outline-none focus:border-[#d4af37] transition text-center sm:text-left"
+              className="w-full sm:w-72 bg-black/50 border border-[#d4af37]/30 text-white placeholder-white/50 rounded-full py-3.5 pl-12 pr-6 focus:outline-none focus:border-[#d4af37] transition text-center sm:text-left font-mono"
               style={{ colorScheme: 'dark' }}
             />
           </div>

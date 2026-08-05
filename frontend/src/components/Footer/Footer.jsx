@@ -24,7 +24,7 @@ const footerColumns = [
   {
     title: 'Support',
     links: [
-      { label: 'Help Centre', to: ROUTES.FAQ },
+      { label: 'Help Centre', to: ROUTES.CONTACT },
       { label: 'Track Order', to: ROUTES.ACCOUNT_ORDERS },
       { label: 'Refund Policy', to: ROUTES.REFUND },
     ],

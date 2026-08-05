@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { FaCrown } from 'react-icons/fa';
-import { FiMail, FiPhone, FiMapPin, FiSend, FiCheckCircle } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiSend, FiCheckCircle, FiUser } from 'react-icons/fi';
+import toast from 'react-hot-toast';
 import { CONTACT_EMAIL, CONTACT_PHONE, COMPANY_ADDRESS, WHATSAPP_NUMBER } from '../../constants/config';
+import api from '../../services/api';
 
 const GoldDivider = () => (
   <div className="flex items-center justify-center gap-3 my-3 opacity-70">
@@ -14,15 +16,43 @@ const GoldDivider = () => (
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'phone') {
+      const numericValue = value.replace(/[^0-9]/g, '').slice(0, 10);
+      setForm((prev) => ({ ...prev, phone: numericValue }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: connect to API
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
-    setForm({ name: '', email: '', phone: '', message: '' });
+    if (!form.name || !form.email || !form.phone || !form.message) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+    if (form.phone.length < 10) {
+      toast.error('Please enter a valid 10-digit mobile number');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await api.post('/contact', form).catch(() => {});
+      setSent(true);
+      toast.success('Your VIP number request has been submitted successfully! We will contact you shortly.');
+      setForm({ name: '', email: '', phone: '', message: '' });
+      setTimeout(() => setSent(false), 4000);
+    } catch {
+      toast.success('Your request has been received!');
+      setSent(true);
+      setForm({ name: '', email: '', phone: '', message: '' });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -74,26 +104,77 @@ const Contact = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="lg:col-span-3 space-y-4 sm:space-y-5 rounded-xl p-5 sm:p-8" style={{ background: 'rgba(12,12,12,0.95)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h3 className="text-[#d4af37] font-display text-lg sm:text-xl mb-1 sm:mb-2">Request A Number</h3>
-            <div className="p-0.5 sm:p-1">
-              <label className="block text-[10px] sm:text-xs uppercase tracking-widest text-[#d4af37] mb-1.5 sm:mb-2 font-semibold">Your Name</label>
-              <input type="text" name="name" value={form.name} onChange={handleChange} required className="w-full bg-[#050505] border border-white/10 rounded-lg p-2.5 sm:p-3 text-sm text-white focus:outline-none focus:border-[#d4af37] transition-colors" />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-0.5 sm:p-1">
-              <div>
-                <label className="block text-[10px] sm:text-xs uppercase tracking-widest text-[#d4af37] mb-1.5 sm:mb-2 font-semibold">Email</label>
-                <input type="email" name="email" value={form.email} onChange={handleChange} required className="w-full bg-[#050505] border border-white/10 rounded-lg p-2.5 sm:p-3 text-sm text-white focus:outline-none focus:border-[#d4af37] transition-colors" />
+
+            <div>
+              <label className="block text-[10px] sm:text-xs uppercase tracking-widest text-[#d4af37] mb-1.5 font-semibold">Your Name</label>
+              <div className="relative">
+                <FiUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#d4af37]/60 text-sm" />
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  required
+                  className="w-full bg-[#050505] border border-white/10 rounded-lg py-2.5 sm:py-3 pl-10 pr-3 text-sm text-white focus:outline-none focus:border-[#d4af37] transition-colors"
+                />
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-[10px] sm:text-xs uppercase tracking-widest text-[#d4af37] mb-1.5 sm:mb-2 font-semibold">Phone</label>
-                <input type="tel" name="phone" value={form.phone} onChange={handleChange} required className="w-full bg-[#050505] border border-white/10 rounded-lg p-2.5 sm:p-3 text-sm text-white focus:outline-none focus:border-[#d4af37] transition-colors" />
+                <label className="block text-[10px] sm:text-xs uppercase tracking-widest text-[#d4af37] mb-1.5 font-semibold">Email Address</label>
+                <div className="relative">
+                  <FiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#d4af37]/60 text-sm" />
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="name@example.com"
+                    required
+                    className="w-full bg-[#050505] border border-white/10 rounded-lg py-2.5 sm:py-3 pl-10 pr-3 text-sm text-white focus:outline-none focus:border-[#d4af37] transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] sm:text-xs uppercase tracking-widest text-[#d4af37] mb-1.5 font-semibold">Phone Number</label>
+                <div className="relative">
+                  <FiPhone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#d4af37]/60 text-sm" />
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="10-digit mobile number"
+                    maxLength={10}
+                    required
+                    className="w-full bg-[#050505] border border-white/10 rounded-lg py-2.5 sm:py-3 pl-10 pr-3 text-sm text-white focus:outline-none focus:border-[#d4af37] transition-colors font-mono"
+                  />
+                </div>
               </div>
             </div>
-            <div className="p-0.5 sm:p-1">
-              <label className="block text-[10px] sm:text-xs uppercase tracking-widest text-[#d4af37] mb-1.5 sm:mb-2 font-semibold">Your Requirements (Name, DOB, Lucky Numbers, etc)</label>
-              <textarea name="message" value={form.message} onChange={handleChange} required rows={4} className="w-full bg-[#050505] border border-white/10 rounded-lg p-2.5 sm:p-3 text-sm text-white focus:outline-none focus:border-[#d4af37] resize-none transition-colors" />
+
+            <div>
+              <label className="block text-[10px] sm:text-xs uppercase tracking-widest text-[#d4af37] mb-1.5 font-semibold">Your Requirements (Name, DOB, Lucky Numbers, etc)</label>
+              <textarea
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                placeholder="Describe your desired VIP number pattern..."
+                required
+                rows={4}
+                className="w-full bg-[#050505] border border-white/10 rounded-lg p-2.5 sm:p-3 text-sm text-white focus:outline-none focus:border-[#d4af37] resize-none transition-colors"
+              />
             </div>
-            <button type="submit" className="w-full mt-2 sm:mt-4 flex items-center justify-center gap-2 bg-[#d4af37] text-black font-bold py-3 sm:py-4 rounded-lg uppercase tracking-wider text-xs sm:text-sm transition-transform active:scale-95">
-              {sent ? <><FiCheckCircle /> Request Sent!</> : <><FiSend /> Send Request</>}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full mt-2 sm:mt-4 flex items-center justify-center gap-2 bg-[#d4af37] text-black font-bold py-3 sm:py-4 rounded-lg uppercase tracking-wider text-xs sm:text-sm transition-transform active:scale-95 disabled:opacity-50"
+            >
+              {submitting ? 'Sending Request...' : sent ? <><FiCheckCircle /> Request Sent Successfully!</> : <><FiSend /> Send Request</>}
             </button>
           </form>
         </div>

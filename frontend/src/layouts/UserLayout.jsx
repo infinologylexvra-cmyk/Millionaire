@@ -23,7 +23,7 @@ const UserLayout = () => {
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-display text-2xl text-cream">{user?.name}</h1>
+            <h1 className="font-display text-2xl text-cream truncate max-w-xs sm:max-w-md">{user?.name}</h1>
             {(isAdmin || user?.role === 'admin') && (
               <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#d4af37]/20 text-[#d4af37] border border-[#d4af37]/40">
                 Admin

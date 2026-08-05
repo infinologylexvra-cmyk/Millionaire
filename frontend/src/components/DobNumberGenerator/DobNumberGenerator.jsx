@@ -18,12 +18,13 @@ const generateDobNumbers = (dobStr) => {
   return patterns.map((num) => ({
     number: num.replace(/(\d{4})(\d{4})(\d{2})/, '$1 $2 $3'),
     raw: num,
-    price: '₹1,999'
+    price: '₹2,499'
   }));
 };
 
 const DobNumberGenerator = () => {
   const [dob, setDob] = useState('');
+  const [inputType, setInputType] = useState('text');
   const [generated, setGenerated] = useState([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const resultsRef = useRef(null);
@@ -67,13 +68,16 @@ const DobNumberGenerator = () => {
 
         <form onSubmit={handleGenerate} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
           <div className="relative w-full sm:w-auto">
-            <FiCalendar className="absolute left-4 top-1/2 -translate-y-1/2 text-[#d4af37] text-lg" />
+            <FiCalendar className="absolute left-4 top-1/2 -translate-y-1/2 text-[#d4af37] text-lg pointer-events-none z-10" />
             <input
-              type="date"
+              type={inputType}
               required
               value={dob}
+              placeholder="DD-MM-YYYY"
+              onFocus={() => setInputType('date')}
+              onBlur={() => { if (!dob) setInputType('text'); }}
               onChange={(e) => setDob(e.target.value)}
-              className="w-full sm:w-72 bg-black/50 border border-[#d4af37]/30 text-white rounded-full py-3.5 pl-12 pr-6 focus:outline-none focus:border-[#d4af37] transition"
+              className="w-full sm:w-72 bg-black/50 border border-[#d4af37]/30 text-white placeholder-white/50 rounded-full py-3.5 pl-12 pr-6 focus:outline-none focus:border-[#d4af37] transition text-center sm:text-left"
               style={{ colorScheme: 'dark' }}
             />
           </div>

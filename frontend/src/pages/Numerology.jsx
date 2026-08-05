@@ -105,10 +105,13 @@ const Numerology = () => {
               />
             ) : (
               <input 
-                type="date" 
+                type="text" 
+                placeholder="DD-MM-YYYY" 
                 value={inputValue}
+                onFocus={(e) => (e.target.type = 'date')}
+                onBlur={(e) => { if (!inputValue) e.target.type = 'text'; }}
                 onChange={e => setInputValue(e.target.value)}
-                className="flex-1 bg-black border border-white/20 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-[#d4af37] text-lg"
+                className="flex-1 bg-black border border-white/20 rounded-xl px-6 py-4 text-white placeholder-white/50 focus:outline-none focus:border-[#d4af37] text-lg"
               />
             )}
             <button 

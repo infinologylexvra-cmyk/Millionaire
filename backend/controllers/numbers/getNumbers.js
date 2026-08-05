@@ -55,11 +55,9 @@ const getNumbers = async (req, res, next) => {
     if (isFeatured === 'true') filter.isFeatured = true;
     if (isFeatured === 'false') filter.isFeatured = false;
 
-    if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = parseFloat(minPrice);
-      if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
-    }
+    const effectiveMin = minPrice ? parseFloat(minPrice) : 2499;
+    filter.price = { $gte: effectiveMin };
+    if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
 
     if (search) {
       const regex = new RegExp(escapeRegex(search), 'i');

@@ -9,7 +9,6 @@ const footerColumns = [
     title: 'Product',
     links: [
       { label: 'Browse Numbers', to: ROUTES.NUMBERS },
-      { label: 'Categories', to: `${ROUTES.HOME}#categories` },
       { label: 'How it Works', to: `${ROUTES.HOME}#how-it-works` },
       { label: 'Coverage', to: `${ROUTES.HOME}#coverage` },
     ],

@@ -243,33 +243,7 @@ const Home = () => {
     <IndiaCitiesSection />
 
 
-    {/* ── POPULAR CATEGORIES ── */}
-    <section id="categories" className="py-14 sm:py-24 px-4 sm:px-6 bg-[#060606] border-y border-[#d4af37]/10">
-      <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-display text-[#d4af37] mb-1">POPULAR CATEGORIES</h2>
-        <GoldDivider />
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mt-8 sm:mt-14">
-          {CATEGORIES.map(({ title, range, icon: Icon, color }, i) => (
-            <div
-              key={i}
-              className="rounded-xl p-5 sm:p-8 text-center group cursor-pointer transition duration-300 hover:scale-[1.02]"
-              style={{
-                background: 'linear-gradient(180deg, rgba(22,22,22,0.9), rgba(10,10,10,0.95))',
-                border: '1px solid rgba(212,175,55,0.18)',
-              }}
-            >
-              <h3 className="text-[#d4af37] font-bold tracking-[0.15em] sm:tracking-[0.25em] text-xs sm:text-sm uppercase mb-0.5 sm:mb-1">{title}</h3>
-              <p className="text-[9px] sm:text-[10px] text-white/30 uppercase tracking-wider mb-3 sm:mb-4">Numbers</p>
-              <Icon className={`${color} text-2xl sm:text-4xl mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300`} />
-              <p className="text-[10px] sm:text-xs text-white/60 mb-5 sm:mb-8">{range}</p>
-              <button className="w-full py-2 sm:py-2.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest border border-[#d4af37]/40 text-[#d4af37] rounded hover:bg-[#d4af37] hover:text-black transition">
-                Explore
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+
 
     {/* ── WHATSAPP CTA ── */}
     <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50">

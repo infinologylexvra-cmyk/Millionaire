@@ -29,7 +29,7 @@ const Numbers = () => {
       category: searchParams.get('category') || '',
       pattern: searchParams.get('pattern') || '',
       operator: searchParams.get('operator') || '',
-      minPrice: searchParams.get('minPrice') || '',
+      minPrice: searchParams.get('minPrice') || '2499',
       maxPrice: searchParams.get('maxPrice') || '',
       search: searchParams.get('search') || '',
       sort: searchParams.get('sort') || 'newest',
@@ -221,7 +221,7 @@ const Numbers = () => {
               label="Min Price"
               type="number"
               min="0"
-              placeholder="0"
+              placeholder="2499"
               value={minPriceInput}
               onChange={handleMinPriceChange}
             />
